@@ -59,4 +59,78 @@ class CompanyController extends Controller
             ]);
         }
     }
+
+    public function getcompany($id)
+    {
+        $company = Company::find($id);
+        if($company)
+        {
+            return response()->json([
+                'status' => 200,
+                'company' => $company
+            ]);
+        }
+        else
+        {
+            return response()->json([
+                'status' => 404,
+                'message' => 'Company Not Found'
+            ]);
+        }
+
+    }
+
+    public function updatecompany(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(),[
+            'name' => 'required|max:191',
+        ]);
+
+        if($validator->fails())
+        {
+            return response()->json([
+                'status' => 400,
+                'errors' => $validator->messages()
+            ]);
+        }
+
+        else{
+
+            $company = Company::find($id);
+            if($company)
+            {
+                $company->name = $request->input('name');
+                $company->email = $request->input('email');
+                $company->website = $request->input('website');
+
+                if($request->hasFile('logo'))
+                {
+                    $path = 'storage/app/public/'.$company->logo;
+                    if(File::exists($path))
+                    {
+                        File::delete($path);
+                    }
+                    $file = $request->file('logo');
+                    $extension = $file->getClientOriginalExtension();
+                    $filename = time().'.'.$extension;
+                    $file->move('storage/app/public/', $filename);
+                    $company->logo = $filename;
+                }
+                $company->save();
+                return response()->json([
+                    'status' => 200,
+                    'message' => "Company Updated Successfully"
+                ]);
+            }
+            else
+            {
+                return response()->json([
+                    'status' => 404,
+                    'message' => $request
+                ]);
+            }
+        }
+    }
+
+
 }

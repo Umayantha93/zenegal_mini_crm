@@ -40,6 +40,51 @@
     </div>
   </div>
 </div>
+<!-- End Model -->
+
+<!-- Edit Company Modal -->
+
+<div class="modal fade" id="EDITCompanyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit Company</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <form id="UpdateCompanyFORM" method="POST" enctype="multipart/form-data">
+        <div class="modal-body">
+
+            <input type="hidden" name="cmp_id" id="cmp_id">
+
+            <ul class="alert alert-warning d-none" id="update_errorList"></ul>          
+            <div class="form-group mb-3">
+                <label>Name</label>
+                <input type="text" name="name"  id="edit_name" class="form-control">
+            </div>
+            <div class="form-group mb-3">
+                <label>Email</label>
+                <input type="text" name="email" id="edit_email" class="form-control">
+            </div>
+            <div class="form-group mb-3">
+                <label>Logo</label>
+                <input type="file" name="logo" class="form-control">
+            </div>
+            <div class="form-group mb-3">
+                <label>Website</label>
+                <input type="text" name="website" id="edit_website" class="form-control">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Update</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+<!-- End edit Company Modal -->
 
 <div class="container">
     <div class="row">
@@ -117,6 +162,74 @@
             });
             }
 
+            $(document).on('click', '.edit_btn', function (e){
+                e.preventDefault();
+                
+                var cmp_id = $(this).val();
+                $('#EDITCompanyModal').modal('show');
+
+                $.ajax({
+                    type: "GET",
+                    url: "/get-company/"+cmp_id,
+                    success: function (response) {
+                        if(response.status == 404)
+                        {
+                            alert(response.message);
+                            $('#EDITCompanyModal').modal('hide');
+                        }
+                        else
+                        {
+                            $('#edit_name').val(response.company.name);
+                            $('#edit_email').val(response.company.email);
+                            $('#edit_website').val(response.company.website);
+                            $('#cmp_id').val(cmp_id);
+                        }
+                    }
+                });
+                // alert(cmp_id);
+            });
+
+            $(document).on('submit', '#UpdateCompanyFORM', function(e) {
+                e.preventDefault();
+
+                var id = $('#cmp_id').val();
+                let EditformData = new FormData($('#UpdateCompanyFORM')[0]);
+
+                $.ajax({
+                    type: "POST",
+                    url: "/update-company/"+id,
+                    data: EditformData,
+                    contentType: false,
+                    processData: false,
+                    success: function (response){
+                        if(response.status == 400)
+                        {
+                            $('#update_errorList').html("");
+                            $('#update_errorList').removeClass('d-none');
+
+                            $.each(response.errors, function (key, err_value){
+                                $('#update_errorList').append('<li>'+err_value+'</li>');
+                            });
+                        }
+                        else if(response.status == 404)
+                        {
+                            alert(response.message);
+                        }
+                        else if(response.status == 200)
+                        {
+                            $('#update_errorList').html("");
+                            $('#update_errorList').addClass('d-none');
+                            alert(response.message);
+                            $('#EDITCompanyModal').modal('hide');
+
+                            fetchCompany();
+                        }
+                        // location.reload();
+                    }
+                });
+            });
+
+
             //add data
             $(document).on('submit', '#AddCompanyFORM', function(e) {
                 e.preventDefault();
@@ -147,6 +260,7 @@
                             $('#AddCompanyModal').modal('hide');
                             alert(response.message);
                             // location.reload(true);
+                            fetchCompany();
                         }
                     }
                 });
