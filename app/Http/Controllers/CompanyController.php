@@ -14,6 +14,14 @@ class CompanyController extends Controller
         return view('company.index');
     }
 
+    public function fetchcompanies()
+    {
+        $company = Company::paginate(5)->all();
+        return response()->json([
+            'company' => $company,
+        ]);
+    }
+
     public function storecompany(Request $request)
     {
         $validator = Validator::make($request->all(),[

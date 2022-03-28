@@ -91,6 +91,32 @@
                 }
             });
 
+            fetchCompany();
+
+            function fetchCompany(){
+            $.ajax({
+                type: "GET",
+                url: "/fetch-companies",
+                dataType: "json",
+                success: function (response) {
+                    console.log(response.company)
+
+                    $('tbody').html("");
+                    $.each(response.company, function(key, item){
+                    $('tbody').append('<tr>\
+                            <th>'+item.id+'</th>\
+                            <th>'+item.name+'</th>\
+                            <th>'+item.email+'</th>\
+                            <th><img src="storage/app/public/'+item.logo+'" width="100px" height="100px" alt="image"></th>\
+                            <th>'+item.website+'</th>\
+                            <th><button type="button" value="'+item.id+'" class="edit_btn btn btn-success btn-sm">Edit</button></th>\
+                            <th><button type="button" value="'+item.id+'" class="delete_btn btn btn-danger btn-sm">Delete</button></th>\
+                            </tr>');
+                    });
+                }
+            });
+            }
+
             //add data
             $(document).on('submit', '#AddCompanyFORM', function(e) {
                 e.preventDefault();

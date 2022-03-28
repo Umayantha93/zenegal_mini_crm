@@ -20,6 +20,7 @@ Route::get('/', function () {
 
 Route::get('/company', [CompanyController::class, 'index'])->name('company');
 Route::post('/add-company', [CompanyController::class, 'storecompany']);
+Route::get('/fetch-companies', [CompanyController::class, 'fetchcompanies']);
 
 Auth::routes(['register'=>false]);
 
