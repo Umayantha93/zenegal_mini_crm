@@ -27,6 +27,7 @@ Route::post('/update-company/{id}', [CompanyController::class, 'updatecompany'])
 Route::delete('/delete-company/{id}', [CompanyController::class, 'destroy']);
 
 Route::get('/employee', [EmployeeController::class, 'index'])->name('employee');
+Route::post('/add-employee', [EmployeeController::class, 'storeemployee']);
 
 Auth::routes(['register'=>false]);
 
