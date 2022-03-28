@@ -79,3 +79,53 @@
 </div>
 
 @endsection
+
+@section('scripts')
+
+    <script>
+        $(document).ready(function (){
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            //add data
+            $(document).on('submit', '#AddCompanyFORM', function(e) {
+                e.preventDefault();
+
+                let formData = new FormData($('#AddCompanyFORM')[0]);
+
+                $.ajax({
+                    type: "POST",
+                    url: "/add-company",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function (response){
+                        if(response.status == 400)
+                        {
+                            $('#save_errorList').html("");
+                            $('#save_errorList').removeClass('d-none');
+                            $.each(response.errors, function (key, err_value){
+                                $('#save_errorList').append('<li>'+err_value+'</li>');
+                            });
+                        }else if(response.status == 200)
+                        {
+                            $('#save_errorList').html("");
+                            $('#save_errorList').addClass('d-none');
+
+                            // this.reset();
+                            // $('#AddCompanyFORM').find('input').val();
+                            $('#AddCompanyModal').modal('hide');
+                            alert(response.message);
+                            // location.reload(true);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+
+@endsection

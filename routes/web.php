@@ -19,6 +19,7 @@ Route::get('/', function () {
 });
 
 Route::get('/company', [CompanyController::class, 'index'])->name('company');
+Route::post('/add-company', [CompanyController::class, 'storecompany']);
 
 Auth::routes(['register'=>false]);
 
