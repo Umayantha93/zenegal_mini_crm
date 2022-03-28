@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\EmployeeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +25,8 @@ Route::get('/fetch-companies', [CompanyController::class, 'fetchcompanies']);
 Route::get('/get-company/{id}', [CompanyController::class, 'getcompany']);
 Route::post('/update-company/{id}', [CompanyController::class, 'updatecompany']);
 Route::delete('/delete-company/{id}', [CompanyController::class, 'destroy']);
+
+Route::get('/employee', [EmployeeController::class, 'index'])->name('employee');
 
 Auth::routes(['register'=>false]);
 
