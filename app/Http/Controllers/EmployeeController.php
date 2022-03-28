@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Employee;
 use App\Models\Company;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class EmployeeController extends Controller
 {
@@ -14,6 +15,16 @@ class EmployeeController extends Controller
         $data = Company::all();
 
         return view('employee.index',  ['data'=>$data]);
+    }
+
+    public function fetchemployees()
+    {
+        $employee = DB::table('employees')->join('companies', 'companies.id', '=', 'employees.company')->select('employees.id', 'employees.first_name', 'employees.last_name', 'companies.name', 'employees.email', 'employees.phone')->get();
+
+        // $employee = Employee::all();
+        return response()->json([
+            'employee' => $employee
+        ]);
     }
 
     public function storeemployee(Request $request)
@@ -47,4 +58,6 @@ class EmployeeController extends Controller
             ]);
         }
     }
+
+    
 }

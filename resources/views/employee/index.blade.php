@@ -100,7 +100,31 @@
                 }
             });
 
+            fetchEmployee();
 
+            function fetchEmployee(){
+                $.ajax({
+                    type: "GET",
+                    url: "/fetch-employees",
+                    dataType: "json",
+                    success: function (response) {
+                        $('tbody').html("");
+                        $.each(response.employee, function(key, item){
+                        $('tbody').append('<tr>\
+                                <th>'+item.id+'</th>\
+                                <th>'+item.first_name+'</th>\
+                                <th>'+item.last_name+'</th>\
+                                <th>'+item.name+'</th>\
+                                <th>'+item.email+'</th>\
+                                <th>'+item.phone+'</th>\
+                                <th><button type="button" value="'+item.id+'" class="edit_btn btn btn-success btn-sm">Edit</button></th>\
+                                <th><button type="button" value="'+item.id+'" class="delete_btn btn btn-danger btn-sm">Delete</button></th>\
+                                </tr>');
+                        
+                        });
+                    }
+                });
+            }
 
             $(document).on('submit', '#AddEmployeeFORM', function(e) {
                 e.preventDefault();
@@ -130,6 +154,7 @@
                             // $('#AddEmployeeFORM').find('input').val();
                             alert(response.message);
                             $('#AddEmployeeModal').modal('hide');
+                            
                             fetchEmployee();
 
 
