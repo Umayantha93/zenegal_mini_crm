@@ -131,6 +131,30 @@ class CompanyController extends Controller
             }
         }
     }
+    public function destroy($id)
+    {
+        $company = Company::find($id);
+        if($company)
+        {
+            $path = 'storage/app/public/'.$company->logo;
+            if(File::exists($path))
+            {
+                File::delete($path);
+            } 
+            $company->delete();
 
+            return response()->json([
+                'status' => 200,
+                'message' => 'Company Deleted Successfully'
+            ]);
+        }
+        else
+        {
+            return response()->json([
+                'status' => 404,
+                'message' => 'Company Not Found'
+            ]);
+        }
+    }
 
 }

@@ -23,7 +23,7 @@ Route::post('/add-company', [CompanyController::class, 'storecompany']);
 Route::get('/fetch-companies', [CompanyController::class, 'fetchcompanies']);
 Route::get('/get-company/{id}', [CompanyController::class, 'getcompany']);
 Route::post('/update-company/{id}', [CompanyController::class, 'updatecompany']);
-
+Route::delete('/delete-company/{id}', [CompanyController::class, 'destroy']);
 
 Auth::routes(['register'=>false]);
 

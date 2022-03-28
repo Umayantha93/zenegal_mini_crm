@@ -86,6 +86,30 @@
 </div>
 <!-- End edit Company Modal -->
 
+<!-- Delete Company Modal -->
+<div class="modal fade" id="DELETECompanyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Delete Company</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+        <div class="modal-body">
+                <h4>Are you sure? you want to delete this data?</h4>
+                <input type="hidden" id="deleting_cmp_id">
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="delete_modal_btn btn btn-primary">Yes Delete</button>
+        </div>
+
+
+    </div>
+  </div>
+</div>
+<!-- end Delete Company Modal -->
+
 <div class="container">
     <div class="row">
         <div class="col-md-12">
@@ -189,6 +213,8 @@
                 // alert(cmp_id);
             });
 
+
+
             $(document).on('submit', '#UpdateCompanyFORM', function(e) {
                 e.preventDefault();
 
@@ -221,7 +247,7 @@
                             $('#update_errorList').addClass('d-none');
                             alert(response.message);
                             $('#EDITCompanyModal').modal('hide');
-
+                            location.reload(true);
                             fetchCompany();
                         }
                         // location.reload();
@@ -229,6 +255,41 @@
                 });
             });
 
+
+            $(document).on('click', '.delete_btn', function (e) {
+                e.preventDefault();
+
+                var cmp_id = $(this).val();
+                $('#DELETECompanyModal').modal('show');
+                $('#deleting_cmp_id').val(cmp_id);
+            });
+
+            $(document).on('click', '.delete_modal_btn', function (e){
+                e.preventDefault();
+
+                var id = $('#deleting_cmp_id').val();
+
+                $.ajax({
+                    type: "DELETE",
+                    url: "/delete-company/"+id,
+                    dataType: 'json',
+                    success: function (response){
+                        if(response.status == 404)
+                        {
+  
+                            alert(response.message);
+                            $('DELETECompanyModal').modal('hide');
+                        }
+                        else if(response.status == 200)
+                        {
+                            alert(response.message); 
+                            $('DELETECompanyModal').modal('hide');   
+                            location.reload(true);   
+                            fetchCompany();
+                        }
+                    }
+                });
+            });
 
             //add data
             $(document).on('submit', '#AddCompanyFORM', function(e) {
@@ -259,7 +320,7 @@
                             // $('#AddCompanyFORM').find('input').val();
                             $('#AddCompanyModal').modal('hide');
                             alert(response.message);
-                            // location.reload(true);
+                            location.reload(true);
                             fetchCompany();
                         }
                     }
