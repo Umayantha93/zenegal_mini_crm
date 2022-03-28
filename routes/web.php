@@ -31,6 +31,7 @@ Route::get('/fetch-employees', [EmployeeController::class, 'fetchemployees']);
 Route::post('/add-employee', [EmployeeController::class, 'storeemployee']);
 Route::get('/edit-employee/{id}', [EmployeeController::class, 'editEmployee']);
 Route::post('/update-employee/{id}', [EmployeeController::class, 'updateemployee']);
+Route::delete('/delete-employee/{id}', [EmployeeController::class, 'destroy']);
 
 Auth::routes(['register'=>false]);
 

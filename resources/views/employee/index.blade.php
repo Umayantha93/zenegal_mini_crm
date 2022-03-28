@@ -283,6 +283,40 @@
                 });
 
             });
+
+            $(document).on('click', '.delete_btn', function (e) {
+                e.preventDefault();
+
+                var emp_id = $(this).val();
+                $('#DELETEEmployeeModal').modal('show');
+                $('#deleting_emp_id').val(emp_id);
+            });
+
+            $(document).on('click', '.delete_modal_btn', function (e){
+                e.preventDefault();
+
+                var id = $('#deleting_emp_id').val();
+
+                $.ajax({
+                    type: "DELETE",
+                    url: "/delete-employee/"+id,
+                    dataType: 'json',
+                    success: function (response){
+                        if(response.status == 404)
+                        {
+                            alert(response.message);
+                            $('DELETEEmployeeModal').modal('hide');
+                        }
+                        else if(response.status == 200)
+                        {
+                            
+                            $('DELETEEmployeeModal').modal('hide');
+                            alert(response.message);
+                            fetchEmployee();
+                        }
+                    }
+                })
+            });
            
         });
     </script> 
