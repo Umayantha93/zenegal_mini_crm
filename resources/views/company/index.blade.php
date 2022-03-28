@@ -245,12 +245,15 @@
                         {
                             $('#update_errorList').html("");
                             $('#update_errorList').addClass('d-none');
-                            alert(response.message);
+                            Swal.fire(
+                            'Company Added!',
+                            'Company successfully inserted!',
+                            'success'
+                            )
                             $('#EDITCompanyModal').modal('hide');
-                            location.reload(true);
+                            // location.reload(true);
                             fetchCompany();
                         }
-                        // location.reload();
                     }
                 });
             });
@@ -278,13 +281,17 @@
                         {
   
                             alert(response.message);
-                            $('DELETECompanyModal').modal('hide');
+                            $('#DELETECompanyModal').modal('hide');
                         }
                         else if(response.status == 200)
                         {
-                            alert(response.message); 
-                            $('DELETECompanyModal').modal('hide');   
-                            location.reload(true);   
+                            Swal.fire(
+                            'Company Deleted!',
+                            'Company successfully deleted!',
+                            'error'
+                            )
+                            $('#DELETECompanyModal').modal('hide');  
+                            // location.reload(true);   
                             fetchCompany();
                         }
                     }
@@ -319,8 +326,11 @@
                             // this.reset();
                             // $('#AddCompanyFORM').find('input').val();
                             $('#AddCompanyModal').modal('hide');
-                            alert(response.message);
-                            location.reload(true);
+                            Swal.fire(
+                            'Company Added!',
+                            'Company successfully inserted!',
+                            'success'
+                            )
                             fetchCompany();
                         }
                     }

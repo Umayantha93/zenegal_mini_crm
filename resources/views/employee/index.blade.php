@@ -102,6 +102,29 @@
 </div>
 <!-- end edit Employee Modal -->
 
+<!-- Delete Employee Modal -->
+<div class="modal fade" id="DELETEEmployeeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Delete Employee</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+        <div class="modal-body">
+                <h4>Are you sure? you want to delete this data?</h4>
+                <input type="hidden" id="deleting_emp_id">
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="delete_modal_btn btn btn-primary">Yes Delete</button>
+        </div>
+
+
+    </div>
+  </div>
+</div>
+<!-- end delete Employee Modal -->
 
 <div class="container">
     <div class="row">
@@ -238,7 +261,11 @@
                         {
                             $('#update_errorList').html("");
                             $('#update_errorList').addClass('d-none');
-                            alert(response.message);
+                            Swal.fire(
+                            'Employee Updated!',
+                            'Employee successfully Updated!',
+                            'info'
+                            )
                             $('#EDITEmployeeModal').modal('hide');                           
                             fetchEmployee();
                         }
@@ -274,7 +301,11 @@
 
                             // this.reset();
                             // $('#AddEmployeeFORM').find('input').val();
-                            alert(response.message);
+                            Swal.fire(
+                            'Employee Added!',
+                            'Employee successfully insertd!',
+                            'success'
+                            )
                             $('#AddEmployeeModal').modal('hide');
 
                             fetchEmployee();
@@ -305,13 +336,17 @@
                         if(response.status == 404)
                         {
                             alert(response.message);
-                            $('DELETEEmployeeModal').modal('hide');
+                            $('#DELETEEmployeeModal').modal('hide');
                         }
                         else if(response.status == 200)
                         {
+                            Swal.fire(
+                            'Employee Deleted!',
+                            'Employee successfully deleted!',
+                            'error'
+                            )
+                            $('#DELETEEmployeeModal').modal('hide');
                             
-                            $('DELETEEmployeeModal').modal('hide');
-                            alert(response.message);
                             fetchEmployee();
                         }
                     }

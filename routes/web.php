@@ -19,6 +19,8 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
+Auth::routes(['register'=>false]);
+
 Route::get('/company', [CompanyController::class, 'index'])->name('company');
 Route::post('/add-company', [CompanyController::class, 'storecompany']);
 Route::get('/fetch-companies', [CompanyController::class, 'fetchcompanies']);
@@ -33,6 +35,6 @@ Route::get('/edit-employee/{id}', [EmployeeController::class, 'editEmployee']);
 Route::post('/update-employee/{id}', [EmployeeController::class, 'updateemployee']);
 Route::delete('/delete-employee/{id}', [EmployeeController::class, 'destroy']);
 
-Auth::routes(['register'=>false]);
+
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
